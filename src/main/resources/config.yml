@@ -1,0 +1,22 @@
+# CloudflareTunnel - Paper 1.20.6+
+#
+# Token ini adalah *Tunnel token* dari Cloudflare Zero Trust dashboard,
+# bukan Global API Key. Jangan bagikan config.yml atau masukkan ke Git.
+tunnel:
+  token: "PASTE_YOUR_CLOUDFLARE_TUNNEL_TOKEN_HERE"
+
+  # Lokasi cloudflared. Nilai "cloudflared" memakai executable dari PATH.
+  # Contoh Windows: "C:/cloudflared/cloudflared.exe"
+  # Contoh Linux: "/usr/local/bin/cloudflared"
+  executable: "cloudflared"
+
+  # Kosongkan untuk memakai folder plugins/CloudflareTunnel.
+  # Folder ini harus sudah ada jika diubah.
+  working-directory: ""
+
+  # Hanya nyalakan setelah tunnel dan hostname telah dikonfigurasi di dashboard.
+  auto-start: false
+
+shutdown:
+  # Jika cloudflared belum berhenti setelah waktu ini, plugin akan menghentikannya paksa.
+  force-stop-after-seconds: 10

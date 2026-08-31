@@ -1,0 +1,15 @@
+name: CloudflareTunnel
+version: 0.1.1
+main: id.cloudflaretunnel.minecraft.CloudflareTunnelPlugin
+api-version: '1.20'
+author: Server Owner
+description: Menjalankan Cloudflare Tunnel (cloudflared) untuk server Minecraft.
+commands:
+  cftunnel:
+    description: Kelola proses Cloudflare Tunnel.
+    usage: /cftunnel <status|start|stop|restart|reload|guide>
+    permission: cftunnel.admin
+permissions:
+  cftunnel.admin:
+    description: Mengelola Cloudflare Tunnel.
+    default: op
