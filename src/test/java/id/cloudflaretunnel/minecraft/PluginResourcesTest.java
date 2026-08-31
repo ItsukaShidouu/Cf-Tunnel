@@ -14,7 +14,7 @@ class PluginResourcesTest {
     void pluginMetadataDeclaresExpectedApiAndVersion() throws IOException {
         String pluginYml = readResource("plugin.yml");
 
-        assertTrue(pluginYml.contains("version: 0.1.1"));
+        assertTrue(pluginYml.contains("version: 0.2.0"));
         assertTrue(pluginYml.contains("api-version: '1.20'"));
         assertTrue(pluginYml.contains("main: id.cloudflaretunnel.minecraft.CloudflareTunnelPlugin"));
     }
@@ -24,6 +24,8 @@ class PluginResourcesTest {
         String config = readResource("config.yml");
 
         assertTrue(config.contains("PASTE_YOUR_CLOUDFLARE_TUNNEL_TOKEN_HERE"));
+        assertTrue(config.contains("PASTE_A_LIMITED_CLOUDFLARE_API_TOKEN_HERE"));
+        assertTrue(config.contains("cloudflare-api:"));
         assertFalse(config.contains("eyJ"), "Jangan commit token Cloudflare ke config bawaan.");
     }
 
