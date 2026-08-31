@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Locale;
 
 final class TunnelCommand implements CommandExecutor, TabCompleter {
-    private static final List<String> SUBCOMMANDS = List.of("status", "start", "stop", "restart", "reload", "guide");
+    private static final List<String> SUBCOMMANDS = List.of("status", "start", "stop", "restart", "reload", "provision", "guide");
 
     private final CloudflareTunnelPlugin plugin;
     private final TunnelManager tunnel;
@@ -23,7 +23,7 @@ final class TunnelCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(color("&e/" + label + " <status|start|stop|restart|reload|guide>"));
+            sender.sendMessage(color("&e/" + label + " <status|start|stop|restart|reload|provision|guide>"));
             return true;
         }
 
@@ -33,6 +33,7 @@ final class TunnelCommand implements CommandExecutor, TabCompleter {
             case "stop" -> runAsync(sender, "stop", () -> tunnel.stop());
             case "restart" -> restart(sender);
             case "reload" -> reload(sender);
+            case "provision" -> runAsync(sender, "provisioning route TCP dan DNS", tunnel::provisionTcpRoute);
             case "guide" -> guide(sender);
             default -> sender.sendMessage(color("&cSubperintah tidak dikenal."));
         }
@@ -59,10 +60,15 @@ final class TunnelCommand implements CommandExecutor, TabCompleter {
     }
 
     private void guide(CommandSender sender) {
+        TunnelSettings.CloudflareApiSettings settings = tunnel.settings().cloudflareApi();
+        String hostname = settings.hostname().isBlank() ? "mc.domain-anda.com" : settings.hostname();
+        int port = settings.port() > 0 ? settings.port() : 25565;
+        sender.sendMessage(color("&eRoute TCP: &f" + hostname + " &e-> &f" + settings.serviceUrl()));
+        sender.sendMessage(color("&eJalankan &f/cftunnel provision &euntuk membuat route dan DNS via API."));
         sender.sendMessage(color("&eCloudflare Zero Trust (TCP) mengharuskan pemain menjalankan:"));
-        sender.sendMessage(color("&fcloudflared access tcp --hostname mc.domain-anda.com --url localhost:25565"));
+        sender.sendMessage(color("&fcloudflared access tcp --hostname " + hostname + " --url localhost:" + port));
         sender.sendMessage(color("&eLalu pemain masuk ke alamat Minecraft: &flocalhost"));
-        sender.sendMessage(color("&7Set public hostname di dashboard ke tcp://localhost:25565."));
+        sender.sendMessage(color("&7Minecraft vanilla tidak dapat langsung memakai hostname tunnel TCP."));
     }
 
     private void runAsync(CommandSender sender, String action, Operation operation) {

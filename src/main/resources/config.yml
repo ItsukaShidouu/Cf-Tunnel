@@ -17,6 +17,27 @@ tunnel:
   # Hanya nyalakan setelah tunnel dan hostname telah dikonfigurasi di dashboard.
   auto-start: false
 
+# Konfigurasi Minecraft yang diteruskan melalui Cloudflare Tunnel.
+# Route TCP ini melindungi server dengan Cloudflare Access. Pemain tetap perlu
+# menjalankan cloudflared di komputer mereka sebelum masuk ke localhost.<port>.
+minecraft:
+  hostname: "mc.example.com"
+  origin-host: "127.0.0.1"
+  port: 25565
+
+# Opsional: aktifkan agar /cftunnel provision dapat membuat/memperbarui route
+# TCP tunnel dan record DNS CNAME secara otomatis melalui Cloudflare API.
+# Buat API Token dengan izin minimum berikut untuk zone dan account terkait:
+# - Cloudflare Tunnel: Edit
+# - DNS: Edit
+# Token disimpan lokal di folder plugin; jangan pernah commit file config hasil edit.
+cloudflare-api:
+  enabled: false
+  api-token: "PASTE_A_LIMITED_CLOUDFLARE_API_TOKEN_HERE"
+  account-id: "PASTE_YOUR_32_CHARACTER_ACCOUNT_ID_HERE"
+  zone-id: "PASTE_YOUR_32_CHARACTER_ZONE_ID_HERE"
+  tunnel-id: "PASTE_YOUR_TUNNEL_UUID_HERE"
+
 shutdown:
   # Jika cloudflared belum berhenti setelah waktu ini, plugin akan menghentikannya paksa.
   force-stop-after-seconds: 10

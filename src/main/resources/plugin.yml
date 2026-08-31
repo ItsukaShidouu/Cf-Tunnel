@@ -7,7 +7,7 @@ description: Menjalankan Cloudflare Tunnel (cloudflared) untuk server Minecraft.
 commands:
   cftunnel:
     description: Kelola proses Cloudflare Tunnel.
-    usage: /cftunnel <status|start|stop|restart|reload|guide>
+    usage: /cftunnel <status|start|stop|restart|reload|provision|guide>
     permission: cftunnel.admin
 permissions:
   cftunnel.admin:

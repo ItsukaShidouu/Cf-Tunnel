@@ -119,6 +119,26 @@ final class TunnelManager {
         return start();
     }
 
+    Result provisionTcpRoute() {
+        TunnelSettings.CloudflareApiSettings api = settings.cloudflareApi();
+        String validationError = api.validationError();
+        if (validationError != null) {
+            return Result.failure(validationError);
+        }
+
+        try {
+            CloudflareApi.provisionTcpRoute(api);
+            return Result.success("Route TCP " + api.hostname() + " -> " + api.serviceUrl()
+                    + " dan DNS CNAME berhasil diprovision.");
+        } catch (CloudflareApi.ApiException exception) {
+            return Result.failure("Provisioning Cloudflare gagal: " + exception.getMessage());
+        }
+    }
+
+    TunnelSettings settings() {
+        return settings;
+    }
+
     boolean isRunning() {
         Process activeProcess = process;
         return activeProcess != null && activeProcess.isAlive();
